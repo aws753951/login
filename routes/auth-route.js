@@ -36,6 +36,7 @@ router.post("/signup", (req, res) => {
   let { name, email, password } = req.body;
   User.findOne({ email }).then((foundUser) => {
     if (foundUser) {
+      req.flash("error_msg", "Email has been signup.");
       res.redirect("/auth/login");
     } else {
       bcrypt.hash(password, 12, (err, hash) => {
@@ -43,10 +44,11 @@ router.post("/signup", (req, res) => {
         newUser
           .save()
           .then(() => {
+            req.flash("success_msg", "Registration succeeds.");
             res.redirect("/auth/login");
           })
           .catch((e) => {
-            console.log(e);
+            req.flash("error_msg", e.errors.name.properties.message);
             res.redirect("/auth/signup");
           });
       });

@@ -8,6 +8,7 @@ const authRouter = require("./routes/auth-route");
 const profileRouter = require("./routes/profile-route");
 const session = require("express-session");
 const passport = require("passport");
+const flash = require("connect-flash");
 
 mongoose
   .connect(process.env.ALTAS, {
@@ -32,6 +33,12 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash("success_msg");
+  res.locals.error_msg = req.flash("error_msg");
+  next();
+});
 
 app.use("/auth", authRouter);
 app.use("/profile", profileRouter);
