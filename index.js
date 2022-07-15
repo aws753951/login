@@ -3,6 +3,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const authRouter = require("./routes/auth-route");
 
 mongoose
   .connect(process.env.ALTAS, {
@@ -17,6 +18,7 @@ mongoose
   });
 
 app.set("view engine", "ejs");
+app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {
   res.render("index");
