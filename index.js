@@ -3,8 +3,11 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-const authRouter = require("./routes/auth-route");
 require("./config/passport");
+const authRouter = require("./routes/auth-route");
+const profileRouter = require("./routes/profile-route");
+const session = require("express-session");
+const passport = require("passport");
 
 mongoose
   .connect(process.env.ALTAS, {
@@ -19,7 +22,18 @@ mongoose
   });
 
 app.set("view engine", "ejs");
+app.use(
+  session({
+    secret: process.env.SECRET,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use("/auth", authRouter);
+app.use("/profile", profileRouter);
 
 app.get("/", (req, res) => {
   res.render("index");
