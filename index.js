@@ -16,8 +16,10 @@ mongoose
     console.log("Fail connected altas");
   });
 
+app.set("view engine", "ejs");
+
 app.get("/", (req, res) => {
-  res.send("ok");
+  res.render("index");
 });
 
 app.listen(8080, () => {
