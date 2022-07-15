@@ -1,6 +1,14 @@
 const router = require("express").Router();
 
-router.get("/", (req, res) => {
+const checkAuthentication = (req, res, next) => {
+  if (!req.isAuthenticated()) {
+    res.redirect("/auth/login");
+  } else {
+    next();
+  }
+};
+
+router.get("/", checkAuthentication, (req, res) => {
   res.render("profile", { user: req.user });
 });
 
