@@ -4,6 +4,7 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const authRouter = require("./routes/auth-route");
+require("./config/passport");
 
 mongoose
   .connect(process.env.ALTAS, {
