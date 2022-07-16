@@ -7,6 +7,17 @@ router.get("/login", (req, res) => {
   res.render("login", { user: req.user });
 });
 
+router.post(
+  "/login",
+  passport.authenticate("local", {
+    failureRedirect: "/auth/login",
+    failureFlash: "Wrong email or password.",
+  }),
+  function (req, res) {
+    res.redirect("/profile");
+  }
+);
+
 router.get(
   "/google",
   passport.authenticate("google", {
