@@ -12,9 +12,18 @@ router.post(
   passport.authenticate("local", {
     failureRedirect: "/auth/login",
     failureFlash: "Wrong email or password.",
+    keepSessionInfo: true,
   }),
   function (req, res) {
-    res.redirect("/profile");
+    if (req.session.returnTo) {
+      let newPath = req.session.returnTo;
+      req.session.returnTo = "";
+      res.redirect(newPath);
+      console.log("-------------");
+      console.log(newPath);
+    } else {
+      res.redirect("/profile");
+    }
   }
 );
 
